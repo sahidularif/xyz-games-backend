@@ -25,10 +25,15 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 mongoose.set('strictQuery', false)
-mongoose
-    .connect(process.env.MONGO_URI, { useNewUrlParser: true })
-    .then(() => console.log('Connected to mongoDB'))
-    .catch(err => console.log(err));
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGO_URI);
+    console.log(`MongoDB Connected`);
+  } catch (error) {
+    console.log(error);
+    process.exit(1);
+  }
+}
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -51,8 +56,10 @@ require('./config/passport')(passport);
 
 const port = process.env.PORT || 5000; 
 
-app.listen(port, () => {
-  console.log(`listening on port ${port}`)
+connectDB().then(() => {
+  app.listen(port, () => {
+      console.log(`Listening on port: ${port}`);
+  })
 })
 
 getGameResults();
