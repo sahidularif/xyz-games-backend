@@ -13,7 +13,7 @@ const cors = require("cors");
 const quickSort = require("../../util/sort");
 
 router.use(cors({
-  origin: ["https://xyz-games-frontend.netlify.app", "https://account.cstu.ac.bd/api/index.php"]
+  origin: ["https://xyz-games-frontend.netlify.app", "http://localhost:3000"]
 }));
 //index ordered by currency, add currency, show, login, sign up
  
