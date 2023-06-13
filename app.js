@@ -15,6 +15,8 @@ const bets = require('./routes/api/bets')
 const path = require('path')
 const resolveBets = require('./util/resolveBets')
 const lockBets = require('./util/lockBets')
+const router = require('express').Router();
+const cors = require("cors")
 require('dotenv').config();
 
 
@@ -36,7 +38,7 @@ const connectDB = async () => {
 }
 
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
 }) )
 
 app.use(bodyParser.json()); 
