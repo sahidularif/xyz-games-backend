@@ -41,7 +41,7 @@ function calculateXSign(headers, params) {
 // GET game list
 router.get('/gamelist'
   , async (req, res) => {
-
+    res.header("Access-Control-Allow-Origin", "*");
     const requestParams = {
       page: 1,
     };
