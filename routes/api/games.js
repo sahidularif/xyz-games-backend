@@ -7,10 +7,6 @@ const url = require('url');
 const cors = require("cors");
 
 //index, show
-router.use(cors({
-  origin: ["https://xyz-games-frontend.netlify.app", "http://localhost:3000"]
-}));
-
 const apiUrl = 'https://staging.slotegrator.network/api/index.php/v1/games';
 const merchantId = '1a2fc693659a847a9239746ae3709143';
 const merchantKey = '346cfad54cc098d7dde4ea3a7d8178016149e7a9';

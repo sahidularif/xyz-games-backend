@@ -34,7 +34,7 @@ const connectDB = async () => {
   } catch (error) {
     console.log(error);
     process.exit(1);
-  }
+  }3+
 }
 
 app.use(bodyParser.urlencoded({
@@ -43,7 +43,8 @@ app.use(bodyParser.urlencoded({
 
 app.use(bodyParser.json()); 
 app.use(cors({
-  origin: ["https://xyz-games-frontend.netlify.app", "http://localhost:3000"]
+  credentials: true,
+  origin: "*",
 }));
 
 // Routes
