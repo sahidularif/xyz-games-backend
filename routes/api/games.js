@@ -76,10 +76,10 @@ router.get('/gamelist'
       });
       const response = await axios.get(apiUrlWithQuery, requestOptions);
       console.log('sign:', xSign)
-      console.log(response.data);
+      console.log('data successfully fetched!');
       res.json(response.data);
     } catch (error) {
-      console.log(error);
+      console.log(error.data);
       res.status(500).json({
         error:
           error.message
