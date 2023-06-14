@@ -62,6 +62,6 @@ connectDB().then(() => {
   app.listen(port, () => {
     console.log(`Listening on port: ${port}`);
   });
-});
 
-getGameResults();
+  getGameResults(); // Move this line inside the connectDB().then() block
+});
