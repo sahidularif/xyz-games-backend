@@ -42,7 +42,11 @@ app.use(bodyParser.urlencoded({
 }) )
 
 app.use(bodyParser.json()); 
+app.use(cors({
+  origin: ["https://xyz-games-frontend.netlify.app", "http://localhost:3000"]
+}));
 
+// Routes
 app.use("/api/users", users);
 app.use("/api/games", games)
 app.use("/api/bets", bets)
