@@ -26,6 +26,8 @@ app.use(cors({
   origin: "*",
 }));
 
+app.use(passport.initialize());
+require('./config/passport')(passport);
 if (process.env.NODE_ENV === "production") {
   app.use(express.static("frontend/build"));
   app.get("/", (req, res) => {
@@ -33,10 +35,11 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-mongoose.set('strictQuery', false);
+
 
 const connectDB = async () => {
   try {
+    mongoose.set('strictQuery', false);
     const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`MongoDB Connected`);
   } catch (error) {
@@ -51,8 +54,6 @@ app.use("/api/games", games);
 app.use("/api/bets", bets);
 app.use("/api/comments", comments);
 
-app.use(passport.initialize());
-require('./config/passport')(passport);
 
 app.get("/", (req, res) => res.send("Hello World!!"));
 
@@ -63,5 +64,6 @@ connectDB().then(() => {
     console.log(`Listening on port: ${port}`);
   });
 
-  getGameResults(); // Move this line inside the connectDB().then() block
+
 });
+getGameResults(); // Move this line inside the connectDB().then() block

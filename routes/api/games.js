@@ -3,7 +3,7 @@ const router = express.Router();
 const axios = require('axios');
 const cryptoo = require('crypto')
 const querystring = require('querystring')
-const url = require('url');  
+const url = require('url');
 const cors = require("cors");
 
 //index, show
@@ -39,54 +39,56 @@ function calculateXSign(headers, params) {
 }
 
 // GET game list
-router.get('/gamelist'
-  , async (req, res) => {
+router.get('/gamelist', async (req, res) => {
+
+  const time = Math.floor(Date.now() / 1000).toString();
+  const headers = {
+    'X-Merchant-Id': merchantId,
+    'X-Timestamp': time,
+    'X-Nonce': nonce,
+  };
+  const requestParams = {
+    page: 1,
+  };
+
+  const { sign } = calculateXSign(headers, requestParams)
+  const requestOptions = {
+    headers: {
+      'X-Merchant-Id': merchantId,
+      'X-Timestamp': time,
+      'X-Nonce': nonce,
+      'X-Sign': sign,
+      'Accept': 'application/json',
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+  };
+  try {
+    const apiUrlWithQuery = url.format({
+      pathname: apiUrl, query: requestParams
+    });
+    const response = await axios.get(apiUrlWithQuery, requestOptions);
+    console.log('data successfully fetched!');
     res.header("Access-Control-Allow-Origin", "*");
-    const requestParams = {
-      page: 1,
-    };
-    const mergedObject = { ...headers, ...requestParams };
-    const sortedKeys = Object.keys(mergedObject).sort();
-    const sortedObject =
-      sortedKeys.reduce((obj, key) => {
-        obj[key] = mergedObject[key];
-        return obj;
-      }, {});
-    const queryString = querystring.stringify(sortedObject);
-    const hmac = cryptoo.createHmac('sha1', merchantKey);
-    hmac.update(queryString);
-    const xSign = hmac.digest('hex');
-    const requestOptions = {
-      headers: {
-        'X-Merchant-Id': merchantId,
-        'X-Timestamp': time,
-        'X-Nonce': nonce,
-        'X-Sign': xSign,
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    };
-    try {
-      const apiUrlWithQuery = url.format({
-        pathname: apiUrl, query: requestParams
-      });
-      const response = await axios.get(apiUrlWithQuery, requestOptions);
-      console.log('data successfully fetched!');
-      res.json(response.data);
-    } catch (error) {
-      console.log(error.response.data);
-      res.status(500).json({
-        error:
-          error.message
-      });
-    }
-  });
+    res.json(response.data);
+  } catch (error) {
+    console.log(error.response.data);
+    res.status(500).json({
+      error:
+        error.message
+    });
+  }
+});
 
 
 // Init game
 router.post('/gameinit', async (req, res) => {
   const { currency, game_uuid, player_id, player_name, session_id } = req.query;
-
+  const time = Math.floor(Date.now() / 1000).toString();
+  const headers = {
+    'X-Merchant-Id': merchantId,
+    'X-Timestamp': time,
+    'X-Nonce': nonce,
+  };
   const requestParams = {
     currency: currency,
     game_uuid: game_uuid,
