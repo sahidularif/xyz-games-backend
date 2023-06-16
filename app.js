@@ -12,7 +12,6 @@ const getGameOdds = require('./util/odds');
 const getGameResults = require('./util/games');
 const Game = require('./models/Game');
 const bets = require('./routes/api/bets');
-const path = require('path');
 const resolveBets = require('./util/resolveBets');
 const lockBets = require('./util/lockBets');
 const router = require('express').Router();
