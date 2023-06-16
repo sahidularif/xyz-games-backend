@@ -19,19 +19,15 @@ const router = require('express').Router();
 const cors = require("cors");
 require('dotenv').config();
 
+// Define apps
+const path = __dirname + 'frontend/build/'
+app.use(express.static(path));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({
   credentials: true,
   origin: "*",
 }));
-
-app.use(passport.initialize());
-require('./config/passport')(passport);
-
-app.use(express.static("frontend/build"));
-
-
 const connectDB = async () => {
   try {
     mongoose.set('strictQuery', false);
@@ -43,14 +39,17 @@ const connectDB = async () => {
   }
 };
 
+app.use(passport.initialize());
+require('./config/passport')(passport);
 // Routes
+
+app.get("/", (req, res) => res.sendFile(path + "index.html"));
 app.use("/api/users", users);
 app.use("/api/games", games);
 app.use("/api/bets", bets);
 app.use("/api/comments", comments);
 
 
-app.get("/", (req, res) => res.send("Hello World!!"));
 
 const port = process.env.PORT || 5000;
 
