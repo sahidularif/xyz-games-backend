@@ -19,7 +19,7 @@ const cors = require("cors");
 require('dotenv').config();
 
 // Define apps
-const path = __dirname + 'frontend/build/'
+const path = __dirname + '/frontend/build/'
 app.use(express.static(path));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
